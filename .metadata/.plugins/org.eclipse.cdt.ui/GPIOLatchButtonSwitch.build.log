@@ -1,0 +1,10 @@
+17:24:08 **** Incremental Build of configuration Debug for project GPIOLatchButtonSwitch ****
+make -j24 all 
+arm-none-eabi-size   GPIOLatchButtonSwitch.elf 
+   text	   data	    bss	    dec	    hex	filename
+   4156	     20	   1572	   5748	   1674	GPIOLatchButtonSwitch.elf
+Finished building: default.size.stdout
+ 
+
+17:24:09 Build Finished. 0 errors, 0 warnings. (took 154ms)
+

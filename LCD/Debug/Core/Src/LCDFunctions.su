@@ -1,0 +1,8 @@
+../Core/Src/LCDFunctions.c:11:6:sendCmd	16	static
+../Core/Src/LCDFunctions.c:27:6:sendChar	16	static
+../Core/Src/LCDFunctions.c:43:6:shitDelay	24	static
+../Core/Src/LCDFunctions.c:48:6:initDisplayModes	8	static
+../Core/Src/LCDFunctions.c:60:6:sendBit	16	static
+../Core/Src/LCDFunctions.c:68:6:charData	16	static
+../Core/Src/LCDFunctions.c:80:6:setOut	16	static
+../Core/Src/LCDFunctions.c:99:6:initPins	8	static

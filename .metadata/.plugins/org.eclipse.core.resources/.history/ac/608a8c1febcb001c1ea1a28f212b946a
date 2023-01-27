@@ -1,0 +1,163 @@
+/**
+ ******************************************************************************
+ * @file           : main.c
+ * @brief          : Main program body
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2022 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
+
+#include "main.h"
+
+void SystemClock_Config(void);
+
+int main(void) {
+
+	HAL_Init();
+	SystemClock_Config();
+
+	RCC->AHBENR |= RCC_AHBENR_GPIOBEN;
+	RCC->AHBENR |= RCC_AHBENR_GPIOCEN;
+
+	GPIOB->MODER = 0b01010101000000000000000000000000;
+	GPIOB->OSPEEDR = 0b11111111000000000000000000000000;
+	GPIOB->PUPDR = 0;
+
+	GPIOC->MODER = 0b00000000000001010101000000000000;
+	GPIOC->OTYPER = 0;
+	GPIOC->OSPEEDR = 0b00000000000011111111000000000000;
+	GPIOC->PUPDR = 0;
+
+	GPIOB->BSRR = 0b00000000000000001111000000000000;
+	GPIOC->BSRR = 0b00000000000000000000001111000000;
+
+	// char character = 'A'; // 0b01000001
+
+	while (1) {
+		// could probably make this recursive
+/*
+		// bit 0 send to PB12
+		if (character & 0b00000001) {
+			GPIOB->BSRR |= GPIO_BSRR_BS_12;
+		} else {
+			GPIOB->BSRR |= GPIO_BSRR_BR_12;
+		}
+		// bit 1 send to PB12
+		if (character & 0b00000010) {
+			GPIOB->BSRR |= GPIO_BSRR_BS_13;
+		} else {
+			GPIOB->BSRR |= GPIO_BSRR_BR_13;
+		}
+		// bit 2 send to PB14
+		if (character & 0b00000100) {
+			GPIOB->BSRR |= GPIO_BSRR_BS_14;
+		} else {
+			GPIOB->BSRR |= GPIO_BSRR_BR_14;
+		}
+		// bit 3 send to PB15
+		if (character & 0b00001000) {
+			GPIOB->BSRR |= GPIO_BSRR_BS_15;
+		} else {
+			GPIOB->BSRR |= GPIO_BSRR_BR_15;
+		}
+		// bit 4 send to PC6
+		if (character & 0b00010000) {
+			GPIOC->BSRR |= GPIO_BSRR_BS_6;
+		} else {
+			GPIOC->BSRR |= GPIO_BSRR_BR_6;
+		}
+		// bit 5 send to PC7
+		if (character & 0b00100000) {
+			GPIOC->BSRR |= GPIO_BSRR_BS_7;
+		} else {
+			GPIOC->BSRR |= GPIO_BSRR_BR_7;
+		}
+		// bit 6 send to PC8
+		if (character & 0b01000000) {
+			GPIOC->BSRR |= GPIO_BSRR_BS_8;
+		} else {
+			GPIOC->BSRR |= GPIO_BSRR_BR_8;
+		}
+		// bit 7 send to PC9
+		if (character & 0b10000000) {
+			GPIOC->BSRR |= GPIO_BSRR_BS_9;
+		} else {
+			GPIOC->BSRR |= GPIO_BSRR_BR_9;
+		}
+		*/
+	}
+}
+
+/**
+ * @brief System Clock Configuration
+ * @retval None
+ */
+void SystemClock_Config(void) {
+	RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
+	RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
+
+	/** Initializes the RCC Oscillators according to the specified parameters
+	 * in the RCC_OscInitTypeDef structure.
+	 */
+	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+	RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+	RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
+		Error_Handler();
+	}
+
+	/** Initializes the CPU, AHB and APB buses clocks
+	 */
+	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
+			| RCC_CLOCKTYPE_PCLK1;
+	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+
+	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK) {
+		Error_Handler();
+	}
+}
+
+/* USER CODE BEGIN 4 */
+
+/* USER CODE END 4 */
+
+/**
+ * @brief  This function is executed in case of error occurrence.
+ * @retval None
+ */
+void Error_Handler(void) {
+	/* USER CODE BEGIN Error_Handler_Debug */
+	/* User can add his own implementation to report the HAL error return state */
+	__disable_irq();
+	while (1) {
+	}
+	/* USER CODE END Error_Handler_Debug */
+}
+
+#ifdef  USE_FULL_ASSERT
+/**
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
+void assert_failed(uint8_t *file, uint32_t line)
+{
+  /* USER CODE BEGIN 6 */
+  /* User can add his own implementation to report the file name and line number,
+     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+  /* USER CODE END 6 */
+}
+#endif /* USE_FULL_ASSERT */
